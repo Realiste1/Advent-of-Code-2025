@@ -1,7 +1,4 @@
-﻿
-using System.Text.RegularExpressions;
-
-string[] batteries = File.ReadAllLines("batteries.txt");
+﻿string[] batteries = File.ReadAllLines("batteries.txt");
 
 long total1 = 0;
 
