@@ -1,7 +1,10 @@
 ﻿
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+
 string[] batteries = File.ReadAllLines("batteries.txt");
 
-long total = 0;
+long total1 = 0;
 
 foreach (string battery in batteries)
 {
@@ -23,37 +26,45 @@ foreach (string battery in batteries)
 		}
 	}
 
-	total += highest;
+	total1 += highest;
 }
 
-Console.WriteLine($"Part 1: {total}");
+Console.WriteLine($"Part 1: {total1}");
 
 // Part 2
 
-total = 0;
+long total2 = 0;
+
+long RecursiveFind(string battery, int loops, string returns)
+{
+	long highest = 0;
+	int index = 0;
+	for (int i = 0; i < battery.Length; i++)
+	{
+		int number = Convert.ToInt32(battery[i].ToString());
+
+		if (number > highest && i < battery.Length - loops)
+		{
+			highest = number;
+			index = i;
+		}
+	}
+	returns += battery[index].ToString();
+	if (loops == 0)
+		return Convert.ToInt64(returns.ToString());
+	long finalLoop = RecursiveFind(battery[(index + 1)..], loops - 1, returns);
+	if (loops != 11)
+		return finalLoop;
+
+	long final = finalLoop;
+
+	return final;
+	
+}
 
 foreach (string battery in batteries)
 {
-	string sortedBattery = string.Join("", battery.OrderDescending());
-	string highestVals = sortedBattery[..12];
-
-	string newBattery = "";
-
-	for(int i = 0; i < battery.Length; i++)
-	{
-		if(highestVals.Contains(battery[i].ToString()))
-		{
-			newBattery += battery[i];
-		}
-	}
-
-	Stack<int> candidates = new Stack<int>();
-	bool found = false;
-	while (!found)
-	{
-		for(int i = 0; i < newBattery.Length; i++)
-		{	
-			
-		}	
-	}
+	total2 += RecursiveFind(battery, 11, "");
 }
+
+Console.WriteLine($"Part 2: {total2}");
